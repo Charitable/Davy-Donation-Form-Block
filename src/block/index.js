@@ -69,10 +69,6 @@ registerBlockType( 'davy/donation-form', {
 	 * @returns {Mixed} JSX Frontend HTML.
 	 */
 	save: ( props ) => {
-		return (
-			<div className={ props.className } data-paypal={ }>
-
-			</div>
-		);
+		return <DavyDonationFormBlock { ... props } />;
 	},
 } );
