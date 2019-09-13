@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Component } = wp.element;
-const { Toolbar } = wp.components;
+const { Toolbar, TextControl } = wp.components;
 const { BlockControls, } = wp.editor;
 
 /**
@@ -87,7 +87,7 @@ export default class DavyDonationFormBlock extends Component {
 	getPreview() {
 		return (
 			<div class="davy-donation-form-block davy-donation-form-block-preview">
-				<form class="davy-donation-form">
+				{/* <form class="davy-donation-form">
 					<ul class="davy-donation-form--steps">
 						<li class="davy-donation-form--amount-step-title">{ __( 'Amount' ) }</li>
 						<li class="davy-donation-form--details-step-title">{ __( 'Details' ) }</li>
@@ -136,7 +136,7 @@ export default class DavyDonationFormBlock extends Component {
 						<button class="davy-donation-form--continue-button davy-donation-form--button">{ __( 'Go Back' ) }</button>
 						<button class="davy-donation-form--donate-button davy-donation-form--button" data-paypal={ this.props.paypal }>{ __( 'Donate' ) }</button>
 					</div>
-				</form>
+				</form> */}
 			</div>
 		);
 	}
