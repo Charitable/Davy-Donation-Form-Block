@@ -8,7 +8,9 @@
 //  Import CSS.
 import './editor.scss';
 import './style.scss';
+
 import DavyDonationFormBlock from './block';
+import DavyDonationFormView from './view';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
@@ -38,7 +40,7 @@ registerBlockType( 'davy/donation-form', {
 	attributes: {
 		paypal: {
 			type: 'string',
-			default: 'eric@164a.com',
+			default: '',
 		}
 	},
 
@@ -69,10 +71,6 @@ registerBlockType( 'davy/donation-form', {
 	 * @returns {Mixed} JSX Frontend HTML.
 	 */
 	save: ( props ) => {
-		return (
-			<form class="davy-donation-form">
-
-			</form>
-		);
+		return <DavyDonationFormView { ... props } />;
 	},
 } );

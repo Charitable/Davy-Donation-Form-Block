@@ -4,11 +4,22 @@
  * CSS for both Frontend+Backend.
  */
 
-.wp-block-cgb-block-davy-donation-form  {
-  background: $red;
-  border: 0.2rem solid $black;
-  color: $black;
-  margin: 0 auto;
-  max-width: 740px;
-  padding: 2rem;
+.davy-donation-form {
+	.davy-donation-form--steps {
+		display: flex;
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		li {
+			flex-grow: 1;
+			flex-basis: 0;
+			padding: 0.5em 0;
+			text-align: center;
+			background-color: #888;
+			color: #fff;
+		}
+		li.active {
+			background-color: #444;
+		}
+	}
 }

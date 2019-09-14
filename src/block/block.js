@@ -1,3 +1,5 @@
+import DavyDonationFormView from './view';
+
 /**
  * WP dependencies.
  */
@@ -17,10 +19,20 @@ export default class DavyDonationFormBlock extends Component {
 			edit_mode: ! this.props.attributes.paypal,
 		};
 
+		this.updateEditMode       = this.updateEditMode.bind( this );
 		this.getInspectorControls = this.getInspectorControls.bind( this );
 		this.getToolbarControls   = this.getToolbarControls.bind( this );
 		this.getSettingsEditor    = this.getSettingsEditor.bind( this );
 		this.getPreview           = this.getPreview.bind( this );
+	}
+
+	/**
+	 * Update edit mode in state.
+	 */
+	updateEditMode() {
+		this.setState( {
+			edit_mode: ! this.state.edit_mode
+		} );
 	}
 
 	/**
@@ -46,7 +58,7 @@ export default class DavyDonationFormBlock extends Component {
 			{
 				icon: 'edit',
 				title: __( 'Edit' ),
-				onClick: ! paypal ? function(){} : () => this.setState( { edit_mode: ! edit_mode } ),
+				onClick: this.updateEditMode,
 				isActive: this.state.edit_mode,
 			},
 		];
@@ -64,7 +76,6 @@ export default class DavyDonationFormBlock extends Component {
 	 * @return Component
 	 */
 	getSettingsEditor() {
-		const self = this;
 		const { attributes, setAttributes } = this.props;
 		const { paypal } = attributes;
 
@@ -73,7 +84,7 @@ export default class DavyDonationFormBlock extends Component {
 				<TextControl
 					label="PayPal Email Address"
 					value={ paypal }
-					onChange={ ( paypal ) => setState( { paypal } ) }
+					onChange={ ( paypal ) => setAttributes( { paypal: paypal } ) }
 				/>
 			</div>
 		);
@@ -85,58 +96,11 @@ export default class DavyDonationFormBlock extends Component {
 	 * @return Component
 	 */
 	getPreview() {
+		const { attributes } = this.props;
+		const { paypal } = attributes;
 		return (
-			<div class="davy-donation-form-block davy-donation-form-block-preview">
-				{/* <form class="davy-donation-form">
-					<ul class="davy-donation-form--steps">
-						<li class="davy-donation-form--amount-step-title">{ __( 'Amount' ) }</li>
-						<li class="davy-donation-form--details-step-title">{ __( 'Details' ) }</li>
-					</ul>
-					<div class="davy-donation-form--step-content davy-donation-form--amount-step-content">
-						<div class="davy-donation-form--field davy-donation-form--suggested-amounts-field">
-							<ul class="davy-donation-form--suggested-amounts">
-								<li>
-									<label>
-										<input type="radio" name="suggested_amount" value="5" />
-										{ __( '$5' ) }
-									</label>
-								</li>
-								<li>
-									<label>
-										<input type="radio" name="suggested_amount" value="25" />
-										{ __( '$25' ) }
-									</label>
-								</li>
-								<li>
-									<label>
-										<input type="radio" name="suggested_amount" value="45" />
-										{ __( '$45' ) }
-									</label>
-								</li>
-							</ul>
-						</div>
-						<button class="davy-donation-form--continue-button davy-donation-form--button">{ __( 'Continue' ) }</button>
-					</div>
-					<div class="davy-donation-form--step-content davy-donation-form--details-step-content" style="display: none;">
-						<div class="davy-donation-form--field davy-donation-form--email-field">
-							<label>
-								<input type="text" name="email" />
-							</label>
-						</div>
-						<div class="davy-donation-form--field davy-donation-form--first-name-field">
-							<label>
-								<input type="text" name="first_name" />
-							</label>
-						</div>
-						<div class="davy-donation-form--field davy-donation-form--last-name-field">
-							<label>
-								<input type="text" name="last_name" />
-							</label>
-						</div>
-						<button class="davy-donation-form--continue-button davy-donation-form--button">{ __( 'Go Back' ) }</button>
-						<button class="davy-donation-form--donate-button davy-donation-form--button" data-paypal={ this.props.paypal }>{ __( 'Donate' ) }</button>
-					</div>
-				</form> */}
+			<div className="davy-donation-form-block davy-donation-form-block-preview">
+				<DavyDonationFormView { ... this.props } />
 			</div>
 		);
 	}
