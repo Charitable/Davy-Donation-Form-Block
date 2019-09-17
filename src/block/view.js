@@ -9,6 +9,8 @@ const { Component } = wp.element;
  */
 import DavyTextField from '../components/text-field';
 import DavyEmailField from '../components/email-field';
+import DavyHiddenField from '../components/hidden-field';
+import DavyButton from '../components/button';
 
 /**
  * The main donation form block UI.
@@ -24,6 +26,10 @@ export default class DavyDonationFormView extends Component {
 	render() {
 		return (
 			<form className="davy-donation-form">
+				<DavyHiddenField
+					field="paypal"
+					value={ this.props.paypal }
+				/>
 				<ul className="davy-donation-form--steps">
 					<li className="davy-donation-form--amount-step-title active">{ __( 'Amount' ) }</li>
 					<li className="davy-donation-form--details-step-title">{ __( 'Details' ) }</li>
@@ -51,7 +57,11 @@ export default class DavyDonationFormView extends Component {
 							</li>
 						</ul>
 					</div>
-					<button className="davy-donation-form--continue-button davy-donation-form--button">{ __( 'Continue' ) }</button>
+					<DavyButton
+						classes="davy-donation-form--continue-button"
+						text={ __( 'Continue' ) }
+						name="continue"
+					/>
 				</div>
 				<div className="davy-donation-form--step-content davy-donation-form--details-step-content">
 					<DavyEmailField
@@ -66,8 +76,16 @@ export default class DavyDonationFormView extends Component {
 						field="last_name"
 						label={ __( 'Last Name' ) }
 					/>
-					<button className="davy-donation-form--continue-button davy-donation-form--button">{ __( 'Go Back' ) }</button>
-					<button className="davy-donation-form--donate-button davy-donation-form--button" data-paypal={ this.props.paypal }>{ __( 'Donate' ) }</button>
+					<DavyButton
+						classes="davy-donation-form--return-button"
+						text={ __( 'Go Back' ) }
+						name="previous"
+					/>
+					<DavyButton
+						classes="davy-donation-form--donate-button"
+						text={ __( 'Donate' ) }
+						name="donate"
+					/>
 				</div>
 			</form>
 		);

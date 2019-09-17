@@ -1,11 +1,11 @@
 <?php
 /**
- * Blocks Initializer
+ * Blocks Initializer.
  *
  * Enqueue CSS/JS of all the blocks.
  *
  * @since   1.0.0
- * @package CGB
+ * @package Davy
  */
 
 // Exit if accessed directly.
@@ -16,47 +16,40 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Enqueue Gutenberg block assets for both frontend + backend.
  *
- * Assets enqueued:
- * 1. blocks.style.build.css - Frontend + Backend.
- * 2. blocks.build.js - Backend.
- * 3. blocks.editor.build.css - Backend.
+ * @since  1.0.0
  *
- * @uses {wp-blocks} for block type registration & related functions.
- * @uses {wp-element} for WP Element abstraction — structure of blocks.
- * @uses {wp-i18n} to internationalize the block's text.
- * @uses {wp-editor} for WP editor styles.
- * @since 1.0.0
+ * @return void
  */
-function davy_donation_form_cgb_block_assets() { // phpcs:ignore
+function davy_donation_form_block_assets() {
 	// Register block styles for both frontend + backend.
 	wp_register_style(
-		'davy_donation_form-cgb-style-css', // Handle.
-		plugins_url( 'dist/blocks.style.build.css', dirname( __FILE__ ) ), // Block style CSS.
-		array( 'wp-editor' ), // Dependency to include the CSS after it.
-		null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.style.build.css' ) // Version: File modification time.
+		'davy-donation-form-css',
+		plugins_url( 'dist/blocks.style.build.css', dirname( __FILE__ ) ),
+		array( 'wp-editor' ),
+		null
 	);
 
 	// Register block editor script for backend.
 	wp_register_script(
-		'davy_donation_form-cgb-block-js', // Handle.
-		plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ), // Block.build.js: We register the block here. Built with Webpack.
-		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ), // Dependencies, defined above.
-		null, // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
-		true // Enqueue the script in the footer.
+		'davy-donation-form-block-js',
+		plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ),
+		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
+		null,
+		true
 	);
 
 	// Register block editor styles for backend.
 	wp_register_style(
-		'davy_donation_form-cgb-block-editor-css', // Handle.
-		plugins_url( 'dist/blocks.editor.build.css', dirname( __FILE__ ) ), // Block editor CSS.
-		array( 'wp-edit-blocks' ), // Dependency to include the CSS after it.
-		null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
+		'davy-donation-form-block-editor-css',
+		plugins_url( 'dist/blocks.editor.build.css', dirname( __FILE__ ) ),
+		array( 'wp-edit-blocks' ),
+		null
 	);
 
 	// WP Localized globals. Use dynamic PHP stuff in JavaScript via `cgbGlobal` object.
 	wp_localize_script(
-		'davy_donation_form-cgb-block-js',
-		'cgbGlobal', // Array containing dynamic data for a JS Global.
+		'davy-donation-form-block-js',
+		'cgbGlobal',
 		[
 			'pluginDirPath' => plugin_dir_path( __DIR__ ),
 			'pluginDirUrl'  => plugin_dir_url( __DIR__ ),
@@ -75,16 +68,36 @@ function davy_donation_form_cgb_block_assets() { // phpcs:ignore
 	 * @since 1.16.0
 	 */
 	register_block_type(
-		'cgb/block-davy-donation-form', array(
-			// Enqueue blocks.style.build.css on both frontend & backend.
-			'style'         => 'davy_donation_form-cgb-style-css',
-			// Enqueue blocks.build.js in the editor only.
-			'editor_script' => 'davy_donation_form-cgb-block-js',
-			// Enqueue blocks.editor.build.css in the editor only.
-			'editor_style'  => 'davy_donation_form-cgb-block-editor-css',
-		)
+		'davy/donation-form',
+		[
+			'style'         => 'davy-donation-form-css',
+			'editor_script' => 'davy-donation-form-block-js',
+			'editor_style'  => 'davy-donation-form-block-editor-css',
+		]
 	);
 }
 
 // Hook: Block assets.
-add_action( 'init', 'davy_donation_form_cgb_block_assets' );
+add_action( 'init', 'davy_donation_form_block_assets' );
+
+
+/**
+ * Set up block scripts.
+ *
+ * This script is used on both the front & backend.
+ *
+ * @since  1.0.0
+ *
+ * @return void
+ */
+function davy_donation_form_script() {
+	wp_enqueue_script(
+		'davy-donation-form-js',
+		plugins_url( '/dist/davy-donation-form.build.js', dirname( __FILE__ ) ),
+		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
+		filemtime( plugin_dir_path( __FILE__ ) . '../dist/davy-donation-form.build.js' ),
+		true
+	);
+}
+
+ add_action( 'enqueue_block_assets', 'davy_donation_form_script' );

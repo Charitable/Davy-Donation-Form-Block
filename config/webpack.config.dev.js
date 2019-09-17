@@ -73,6 +73,7 @@ const extractConfig = {
 module.exports = {
 	entry: {
 		'./dist/blocks.build': paths.pluginBlocksJs, // 'name' : 'path/file.ext'.
+		'./dist/davy-donation-form.build': paths.pluginJs,
 	},
 	output: {
 		// Add /* filename */ comments to generated require()s in the output.
