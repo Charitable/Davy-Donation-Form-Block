@@ -16,13 +16,12 @@ export default class DavyButton extends Component {
 	 * Render the block UI.
 	 */
 	render() {
-		const { props } = this;
-		const { classes, text, name } = props;
+		const { classes, text, name } = this.props;
 
 		let className = classes + " davy-donation-form--button";
 
 		return (
-			<button className={ classes } name={ name }>{ text }</button>
+			<button className={ className } name={ name }>{ text }</button>
 		);
 	}
 }

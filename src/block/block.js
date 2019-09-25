@@ -80,7 +80,7 @@ export default class DavyDonationFormBlock extends Component {
 		const { paypal } = attributes;
 
 		return (
-			<div class="davy-donation-block davy-donation-form-block-settings">
+			<div className="davy-donation-block davy-donation-form-block-settings">
 				<TextControl
 					label="PayPal Email Address"
 					value={ paypal }

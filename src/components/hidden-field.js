@@ -6,7 +6,7 @@ const { Component } = wp.element;
 /**
  * The main donation form block UI.
  */
-export default class DavyHiddenield extends Component {
+export default class DavyHiddenField extends Component {
 	constructor() {
 		super( ...arguments );
 	}
@@ -15,8 +15,7 @@ export default class DavyHiddenield extends Component {
 	 * Render the block UI.
 	 */
 	render() {
-		const { props } = this;
-		const { name, value } = props;
+		const { name, value } = this.props;
 
 		return (
 			<input type="hidden" name={ name } value={ value } />

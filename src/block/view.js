@@ -7,8 +7,7 @@ const { Component } = wp.element;
 /**
  * Davy components
  */
-import DavyTextField from '../components/text-field';
-import DavyEmailField from '../components/email-field';
+import DavyInputField from '../components/input-field';
 import DavyHiddenField from '../components/hidden-field';
 import DavyButton from '../components/button';
 
@@ -24,11 +23,14 @@ export default class DavyDonationFormView extends Component {
 	 * Render the block UI.
 	 */
 	render() {
+		const { attributes } = this.props;
+		const { paypal } = attributes;
+
 		return (
-			<form className="davy-donation-form">
+			<form className="davy-donation-form" method="post">
 				<DavyHiddenField
-					field="paypal"
-					value={ this.props.paypal }
+					name="paypal"
+					value={ paypal }
 				/>
 				<ul className="davy-donation-form--steps">
 					<li className="davy-donation-form--amount-step-title active">{ __( 'Amount' ) }</li>
@@ -64,17 +66,20 @@ export default class DavyDonationFormView extends Component {
 					/>
 				</div>
 				<div className="davy-donation-form--step-content davy-donation-form--details-step-content">
-					<DavyEmailField
+					<DavyInputField
 						field="email"
 						label={ __( 'Email' ) }
+						type="email"
 					/>
-					<DavyTextField
+					<DavyInputField
 						field="first_name"
 						label={ __( 'First Name' ) }
+						type="text"
 					/>
-					<DavyTextField
+					<DavyInputField
 						field="last_name"
 						label={ __( 'Last Name' ) }
+						type="text"
 					/>
 					<DavyButton
 						classes="davy-donation-form--return-button"
