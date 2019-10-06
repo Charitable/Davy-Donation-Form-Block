@@ -5,8 +5,9 @@ import DavyDonationFormView from './view';
  */
 const { __ } = wp.i18n;
 const { Component } = wp.element;
-const { Toolbar, TextControl } = wp.components;
-const { BlockControls, } = wp.editor;
+const { Toolbar, TextControl, TextareaControl, SelectControl } = wp.components;
+const { BlockControls } = wp.editor;
+const { withState } = wp.compose;
 
 /**
  * The main donation form block UI.
@@ -50,10 +51,6 @@ export default class DavyDonationFormBlock extends Component {
 	 * @return Component
 	 */
 	getToolbarControls() {
-		const { edit_mode } = this.state;
-		const { attributes } = this.props;
-		const { paypal } = attributes;
-
 		const editButton = [
 			{
 				icon: 'edit',
@@ -77,14 +74,54 @@ export default class DavyDonationFormBlock extends Component {
 	 */
 	getSettingsEditor() {
 		const { attributes, setAttributes } = this.props;
-		const { paypal } = attributes;
+		const { paypal_client_id, currency, thank_you_message } = attributes;
 
 		return (
 			<div className="davy-donation-block davy-donation-form-block-settings">
 				<TextControl
-					label="PayPal Email Address"
-					value={ paypal }
-					onChange={ ( paypal ) => setAttributes( { paypal: paypal } ) }
+					label={ __( 'PayPal Client ID' ) }
+					value={ paypal_client_id }
+					onChange={ ( paypal_client_id ) => setAttributes( { paypal_client_id: paypal_client_id } ) }
+				/>
+				<SelectControl
+					label={ __( 'Currency' ) }
+					value={ currency }
+					onChange={ ( currency ) => setAttributes( { currency: currency } ) }
+					options={
+						[
+							{ label: __( 'Australian dollar' ), value: 'AUD' },
+							{ label: __( 'Brazilian real' ), value: 'BRL' },
+							{ label: __( 'Canadian dollar' ), value: 'CAD' },
+							{ label: __( 'Czech koruna' ), value: 'CZK' },
+							{ label: __( 'Danish krone' ), value: 'DKK' },
+							{ label: __( 'Euro' ), value: 'EUR' },
+							{ label: __( 'Hong Kong dollar' ), value: 'HKD' },
+							{ label: __( 'Hungarian forint' ), value: 'HUF' },
+							{ label: __( 'Indian rupee' ), value: 'INR' },
+							{ label: __( 'Israeli new shekel' ), value: 'ILS' },
+							{ label: __( 'Japanese yen' ), value: 'JPY' },
+							{ label: __( 'Malaysian ringgit' ), value: 'MYR' },
+							{ label: __( 'Mexican peso' ), value: 'MXN' },
+							{ label: __( 'New Taiwan dollar' ), value: 'TWD' },
+							{ label: __( 'New Zealand dollar' ), value: 'NZD' },
+							{ label: __( 'Norwegian krone' ), value: 'NOK' },
+							{ label: __( 'Philippine peso' ), value: 'PHP' },
+							{ label: __( 'Polish złoty' ), value: 'PLN' },
+							{ label: __( 'Pound sterling' ), value: 'GBP' },
+							{ label: __( 'Russian ruble' ), value: 'RUB' },
+							{ label: __( 'Singapore dollar' ), value: 'SGD' },
+							{ label: __( 'Swedish krona' ), value: 'SEK' },
+							{ label: __( 'Swiss franc' ), value: 'CHF' },
+							{ label: __( 'Thai baht' ), value: 'THB' },
+							{ label: __( 'United States dollar' ), value: 'USD' }
+						]
+					}
+				/>
+				<TextareaControl
+					label={ __( 'Thank you message' ) }
+					help={ __( 'Customize the message that will be displayed to donors after they complete their donation.' ) }
+					value={ thank_you_message }
+					onChange={ ( thank_you_message ) => setAttributes( { thank_you_message: thank_you_message } ) }
 				/>
 			</div>
 		);
@@ -97,7 +134,6 @@ export default class DavyDonationFormBlock extends Component {
 	 */
 	getPreview() {
 		const { attributes } = this.props;
-		const { paypal } = attributes;
 		return (
 			<div className="davy-donation-form-block davy-donation-form-block-preview">
 				<DavyDonationFormView { ... this.props } />

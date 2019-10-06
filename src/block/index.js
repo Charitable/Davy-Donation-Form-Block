@@ -38,9 +38,17 @@ registerBlockType( 'davy/donation-form', {
 		__( 'charitable' ),
 	],
 	attributes: {
-		paypal: {
+		paypal_client_id: {
 			type: 'string',
 			default: '',
+		},
+		currency: {
+			type: 'string',
+			default: 'USD',
+		},
+		thank_you_message: {
+			type: 'string',
+			default: __( 'Thank you for your donation!' )
 		}
 	},
 
