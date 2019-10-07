@@ -112,13 +112,10 @@ const Davy = function() {
 			 */
 			on_paypal_load: function() {
 				paypal.Buttons({
+					enableStandardCardFields: true,
 					createOrder: function(data, actions) {
 						// Set up the transaction
 						return actions.order.create({
-							style: {
-								layout: 'vertical',
-								tagline: false
-							},
 							payer: {
 								name: {
 									given_name: self.runner.get_submitted_value('first_name'),
@@ -126,11 +123,14 @@ const Davy = function() {
 								},
 								email_address: self.runner.get_submitted_value('email'),
 							},
-							purchase_units: [{
-								amount: {
-									value: self.runner.get_submitted_amount()
+							purchase_units: [
+								{
+									amount: {
+										value: self.runner.get_submitted_amount(),
+										currency_code: self.runner.get_submitted_value('currency')
+									}
 								}
-							}]
+							]
 						});
 					},
 					onApprove: function(data, actions) {

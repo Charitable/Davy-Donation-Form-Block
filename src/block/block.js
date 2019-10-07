@@ -17,7 +17,7 @@ export default class DavyDonationFormBlock extends Component {
 		super( ...arguments );
 
 		this.state = {
-			edit_mode: ! this.props.attributes.paypal,
+			edit_mode: ! this.props.attributes.paypal_client_id,
 		};
 
 		this.updateEditMode       = this.updateEditMode.bind( this );
@@ -133,7 +133,6 @@ export default class DavyDonationFormBlock extends Component {
 	 * @return Component
 	 */
 	getPreview() {
-		const { attributes } = this.props;
 		return (
 			<div className="davy-donation-form-block davy-donation-form-block-preview">
 				<DavyDonationFormView { ... this.props } />

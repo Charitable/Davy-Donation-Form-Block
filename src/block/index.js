@@ -49,6 +49,9 @@ registerBlockType( 'davy/donation-form', {
 		thank_you_message: {
 			type: 'string',
 			default: __( 'Thank you for your donation!' )
+		},
+		fields_JSON: {
+			type: 'string'
 		}
 	},
 
