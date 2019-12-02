@@ -53,7 +53,8 @@ function davy_donation_form_block_assets() {
 		[
 			'pluginDirPath' => plugin_dir_path( __DIR__ ),
 			'pluginDirUrl'  => plugin_dir_url( __DIR__ ),
-			// Add more data here that you want to access from `DAVY` object.
+			'formFields'    => davy_get_form_fields(),
+			'formSections'  => davy_get_form_sections(),
 		]
 	);
 
@@ -101,3 +102,39 @@ function davy_donation_form_script() {
 }
 
 add_action( 'enqueue_block_assets', 'davy_donation_form_script' );
+
+/**
+ * Return the fields to display in the form.
+ *
+ * @since  1.0.0
+ *
+ * @return array
+ */
+function davy_get_form_fields() {
+	/**
+	 * Filter the fields to add to the donation form.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $fields The form fields.
+	 */
+	return apply_filters( 'davy_form_fields', include( plugin_dir_path( __DIR__ ) . '/fields.php' ) );
+}
+
+/**
+ * Return the fields to display in the form.
+ *
+ * @since  1.0.0
+ *
+ * @return array
+ */
+function davy_get_form_sections() {
+	/**
+	 * Filter the sections to add to the donation form.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $sections The form sections.
+	 */
+	return apply_filters( 'davy_form_sections', include( plugin_dir_path( __DIR__ ) . '/sections.php' ) );
+}
