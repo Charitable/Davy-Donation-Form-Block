@@ -46,10 +46,10 @@ function davy_donation_form_block_assets() {
 		null
 	);
 
-	// WP Localized globals. Use dynamic PHP stuff in JavaScript via `DAVY` object.
+	// WP Localized globals. Use dynamic PHP stuff in JavaScript via `DAVY_VARS` object.
 	wp_localize_script(
 		'davy-donation-form-block-js',
-		'DAVY',
+		'DAVY_VARS',
 		[
 			'pluginDirPath' => plugin_dir_path( __DIR__ ),
 			'pluginDirUrl'  => plugin_dir_url( __DIR__ ),
@@ -118,7 +118,7 @@ function davy_get_form_fields() {
 	 *
 	 * @param array $fields The form fields.
 	 */
-	return apply_filters( 'davy_form_fields', include( plugin_dir_path( __DIR__ ) . '/fields.php' ) );
+	return apply_filters( 'davy_form_fields', include( plugin_dir_path( __DIR__ ) . 'src/fields.php' ) );
 }
 
 /**
@@ -136,5 +136,5 @@ function davy_get_form_sections() {
 	 *
 	 * @param array $sections The form sections.
 	 */
-	return apply_filters( 'davy_form_sections', include( plugin_dir_path( __DIR__ ) . '/sections.php' ) );
+	return apply_filters( 'davy_form_sections', include( plugin_dir_path( __DIR__ ) . 'src/sections.php' ) );
 }

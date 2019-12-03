@@ -5,7 +5,7 @@ return [
 		'type'     => 'email',
 		'label'    => __( 'Email Address', 'davy' ),
 		'required' => true,
-		'section'  => 'user',
+		'section'  => 'details',
 		'priority' => 2,
 	],
 	[
@@ -13,7 +13,7 @@ return [
 		'type'     => 'text',
 		'label'    => __( 'First Name', 'davy' ),
 		'required' => true,
-		'section'  => 'user',
+		'section'  => 'details',
 		'priority' => 4,
 	],
 	[
@@ -21,7 +21,7 @@ return [
 		'type'     => 'text',
 		'label'    => __( 'Last Name', 'davy' ),
 		'required' => true,
-		'section'  => 'user',
+		'section'  => 'details',
 		'priority' => 6,
 	],
 ];

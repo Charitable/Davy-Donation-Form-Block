@@ -10,8 +10,7 @@ const { Component } = wp.element;
 import DavyInputField from '../components/input-field';
 import DavyHiddenField from '../components/hidden-field';
 import DavyButton from '../components/button';
-import DefaultFields from './fields';
-import DefaultSections from './sections';
+import DavySelectField from '../components/select-field';
 
 /**
  * The main donation form block UI.
@@ -19,106 +18,70 @@ import DefaultSections from './sections';
 export default class DavyDonationFormView extends Component {
 	constructor() {
 		super( ...arguments );
-
-		this.state = {
-			ready: false,
-			fields_JSON: '[]',
-			fields: [],
-			sections: []
-		}
-	}
-
-	/**
-	 * Fetch Charitable donation fields.
-	 */
-	componentDidMount() {
-		const self = this;
-
-		this.setState({ ready: false });
-
-		wp.apiFetch( {
-			path: 'charitable/v1/donation-fields/sections',
-		}).then(response => {
-			if (response) {
-				self.setState({
-					sections: response
-				});
-
-				// self.setState({
-				// 	sections: response,
-				// });
-
-				// Now fetch donation fields.
-				wp.apiFetch( {
-					path: 'charitable/v1/donation-fields'
-				}).then(response => {
-					if (response) {
-						return response;
-					}
-					return DefaultFields;
-				}).then(response => {
-					self.setState({
-						fields_JSON: JSON.stringify(response),
-						fields: response,
-						ready: true
-					});
-
-					// self.props.setAttributes({
-					// 	fields_JSON: JSON.stringify(response)
-					// });
-				}).catch(error => {
-					self.setState({
-						fields_JSON: JSON.stringify(DefaultFields),
-						fields: DefaultFields,
-						sections: DefaultSections,
-						ready: true
-					});
-
-					// self.props.setAttributes({
-					// 	fields_JSON: JSON.stringify(DefaultFields)
-					// });
-				});
-			}
-		}).catch(error => {
-			self.setState({
-				sections: DefaultSections,
-				fields_JSON: JSON.stringify(DefaultFields),
-				fields: DefaultFields,
-				ready: true
-			});
-
-			// self.props.setAttributes({
-			// 	sections: DefaultSections,
-			// 	fields_JSON: JSON.stringify(DefaultFields)
-			// });
-		});
 	}
 
 	/**
 	 * Get the form fields UI.
 	 */
-	getFormFields(fields) {
-		return fields.map((field) => {
-			switch( field.type ) {
-				default:
-					return <DavyInputField
-						field={ field.key }
-						label={ field.label }
-						type={ field.type }
-					/>
-			}
-		});
+	getFormFields() {
+		return (
+			DAVY_VARS.formSections.map((section) => {
+				const fields = DAVY_VARS.formFields.filter((field) => {
+					return section.key === field.section;
+				});
+
+				if ( fields.length ) {
+					fields.sort((a, b) => {
+						if (a.priority < b.priority) return -1;
+						if (a.priority > b.priority) return 1;
+						return 0;
+					});
+
+					return this.getSectionFields(section, fields);
+				}
+			})
+		);
+	}
+
+	/**
+	 * Get the fields in a section.
+	 */
+	getSectionFields(section, fields) {
+		const classes = 'davy-donation-form--step-content davy-donation-form--' + section.key + '-step-content';
+		return (
+			<div className={ classes } data-tab={ section.key }>
+				{
+					fields.map((field) => {
+						switch( field.type ) {
+							case 'select':
+								return <DavySelectField
+									field={ field.key }
+									label={ field.label }
+									options={ field.options }
+								/>
+
+							default:
+								return <DavyInputField
+									field={ field.key }
+									label={ field.label }
+									type={ field.type }
+								/>
+						}
+					})
+				}
+				<div className="davy-donation-form--paypal-button-container"></div>
+			</div>
+		);
 	}
 
 	/**
 	 * Get the section headers.
 	 */
-	getSectionHeaders(sections) {
-		// console.log(sections);
-		return sections.map((section) => {
+	getSectionHeaders() {
+		return DAVY_VARS.formSections.map((section) => {
 			const { key, label, default_section } = section;
 
-			let classes = 'davy-donation-form--' + { key } + '-step-title';
+			let classes = 'davy-donation-form--' + key + '-step-title';
 
 			if ( default_section ) {
 				classes += ' active';
@@ -134,18 +97,8 @@ export default class DavyDonationFormView extends Component {
 	 * Render the block UI.
 	 */
 	render() {
-		if ( ! this.state.ready ) {
-			return null;
-		}
-
 		const { attributes } = this.props;
-		const { paypal_client_id, currency, thank_you_message, fields_JSON, sections } = attributes;
-
-		const fields = JSON.parse( fields_JSON );
-
-		console.log(sections);
-
-		setAttributes({ sections: this.state.sections });
+		const { paypal_client_id, currency, thank_you_message } = attributes;
 
 		return (
 			<div className="davy-donation-form-wrapper">
@@ -159,9 +112,7 @@ export default class DavyDonationFormView extends Component {
 						value={ currency }
 					/>
 					<ul className="davy-donation-form--steps">
-						{ this.getSectionHeaders(sections) }
-						{/* <li className="davy-donation-form--amount-step-title active" data-tab="amount">{ __( 'Amount' ) }</li>
-						<li className="davy-donation-form--details-step-title" data-tab="details">{ __( 'Details' ) }</li> */}
+						{ this.getSectionHeaders() }
 					</ul>
 					<div className="davy-donation-form--step-content davy-donation-form--amount-step-content active" data-tab="amount">
 						<div className="davy-donation-form--field davy-donation-form--suggested-amounts-field">
@@ -192,10 +143,7 @@ export default class DavyDonationFormView extends Component {
 							name="continue"
 						/>
 					</div>
-					<div className="davy-donation-form--step-content davy-donation-form--details-step-content" data-tab="details">
-						{ this.getFormFields(fields) }
-						<div className="davy-donation-form--paypal-button-container"></div>
-					</div>
+					{ this.getFormFields() }
 				</form>
 				<div className="davy-donation-form--thank-you">
 					<p>{ thank_you_message }</p>

@@ -34,15 +34,13 @@
 	.davy-donation-form--step-content {
 		display: none;
 		&.active {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
 			padding: 1em 0;
 		}
 		&.davy-donation-form--amount-step-content.active {
 			display: block;
-		}
-		&.davy-donation-form--details-step-content.active {
-			display: flex;
-			flex-wrap: wrap;
-			justify-content: space-between;
 		}
 	}
 	.davy-donation-form--suggested-amounts {

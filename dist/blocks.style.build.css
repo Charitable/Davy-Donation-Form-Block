@@ -40,16 +40,15 @@
 .davy-donation-form .davy-donation-form--step-content {
   display: none; }
   .davy-donation-form .davy-donation-form--step-content.active {
-    padding: 1em 0; }
-  .davy-donation-form .davy-donation-form--step-content.davy-donation-form--amount-step-content.active {
-    display: block; }
-  .davy-donation-form .davy-donation-form--step-content.davy-donation-form--details-step-content.active {
     display: -ms-flexbox;
     display: flex;
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
     -ms-flex-pack: justify;
-        justify-content: space-between; }
+        justify-content: space-between;
+    padding: 1em 0; }
+  .davy-donation-form .davy-donation-form--step-content.davy-donation-form--amount-step-content.active {
+    display: block; }
 
 .davy-donation-form .davy-donation-form--suggested-amounts {
   list-style: none;

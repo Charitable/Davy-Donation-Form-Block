@@ -6,7 +6,7 @@ return [
 		'default_section' => true,
 	],
 	[
-		'key'             => 'user',
+		'key'             => 'details',
 		'label'           => __( 'Details', 'davy' ),
 		'default_section' => false,
 	],
